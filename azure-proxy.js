@@ -3,6 +3,7 @@ var BinaryServer = require('binaryjs').BinaryServer;
 var fs           = require('fs');
 var config       = require('./configs/app-config.js');
 var http         = require('http');
+var https         = require('https');
 var server = BinaryServer({ port: config.azure_proxy_port });
 var log_name = config.logs.access;
 
@@ -130,10 +131,20 @@ server.on('connection', function(client){
                     stream.on('data', function(url){
                         logMessage('Downloading file: ' + url);
                         var generated_name = generateRandomString(15);
-                        var extension = url.substring(url.lastIndexOf('.'));
+                        var ext_start = url.lastIndexOf('.');
+                        var ext_end = url.indexOf('?', ext_start);
+                        if(ext_end == -1){
+                            ext_end = url.length;
+                        }
+                        var extension = url.substring(ext_start, ext_end);
                         var filename = '_tmp_/file_' + generated_name + extension;
                         var file = fs.createWriteStream(filename);
-                        var request = http.get(url, function(response) {
+                        var http_handler = http;
+                        if(url.indexOf("https") == 0){
+                            http_handler = https;
+                        }
+                        
+                        var request = http_handler.get(url, function(response) {
                             if(response.headers['content-type'].search('text') == -1){
                                 response.pipe(file);
                                 file.on('finish', function(){
