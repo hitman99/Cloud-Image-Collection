@@ -1,0 +1,10 @@
+server {
+        listen   80; ## listen for ipv4; this line is default and implied
+        server_name images.domain.com;
+
+        root /var/www/images.domain.com/client/;
+        index index.html;
+
+        access_log /var/www/images.domain.com/log/access.log;
+        error_log /var/www/images.domain.com/log/error.log;
+}
