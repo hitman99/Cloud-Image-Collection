@@ -41,5 +41,5 @@ module.exports = {
             return blobSvc.getUrl(container_name, blob_name);
         }
     },
-    customDomain : 'http://azure-img.hitman.lt'
+    customDomain : 'http://your-azure-domain.com'
 }
