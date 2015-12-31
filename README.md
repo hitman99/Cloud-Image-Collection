@@ -68,6 +68,11 @@ module.exports = {
 }
 ```
 
+Azure cloud custom domain - if you configured one, define it in azure-blobs.js. If not, set it to null.
+```javascript
+customDomain : 'http://your-azure-domain.com'
+```
+
 This is it, cloud image library is fully configured now.
 
 Starting, stopping and restarting
