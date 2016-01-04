@@ -1,6 +1,6 @@
 /*****************
  * @preserve
- * Copyright(c) MuscleByte <tomas@musclebyte.com>, 2015
+ * Copyright(c) MuscleByte <tomas@musclebyte.com>, 2016
  *****************/
 
 (function(){
@@ -164,21 +164,22 @@
                         if(++_this.lastLoaded < _this.blobs.length){
                             var item = _this.blobs[_this.lastLoaded];
                             _this.createImageInDOM(item.url, item.type);
-                            _this.activateSharingButtons(item.url);
+                            _this.activateSharingButtons(item.name);
                         }
                         loading = false;
                     }
                 }
             });
         },
-        activateSharingButtons : function(src){
+        activateSharingButtons : function(name){
+            var url = window.location.origin + '/share/' + name;
             var _this = this;
             $('.ui.one.column.grid').find('.segment:last').find('button:first').click(function(){
-                var win = window.open(_this.facebook_sharer + src, '_blank');
+                var win = window.open(_this.facebook_sharer + url, '_blank');
                 win.focus();
             });
             $('.ui.one.column.grid').find('.segment:last').find('button:last').click(function(){
-                window.prompt("URL:", src);
+                window.prompt("URL:", url);
             });
         },
         showImages : function(){
@@ -186,7 +187,7 @@
                 for(var i = 0; i != this.initialLoad; i++){
                     var item = this.blobs[i];
                     this.createImageInDOM(item.url, item.type);
-                    this.activateSharingButtons(item.url);
+                    this.activateSharingButtons(item.name);
                 }
                 this.lastLoaded = 2;
             }

@@ -7,4 +7,9 @@ server {
 
         access_log /var/www/images.domain.com/log/access.log;
         error_log /var/www/images.domain.com/log/error.log;
+
+        location /share/ {
+                rewrite  ^/share/(.*)  /?name=$1 break;
+                proxy_pass http://127.0.0.1:3000;
+        }
 }

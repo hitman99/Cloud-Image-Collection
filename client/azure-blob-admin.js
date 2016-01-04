@@ -1,6 +1,6 @@
 /*****************
  * @preserve
- * Copyright(c) MuscleByte <tomas@musclebyte.com>, 2015
+ * Copyright(c) MuscleByte <tomas@musclebyte.com>, 2016
  *****************/
 
 (function(){

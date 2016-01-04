@@ -3,9 +3,10 @@ var BinaryServer = require('binaryjs').BinaryServer;
 var fs           = require('fs');
 var config       = require('./configs/app-config.js');
 var http         = require('http');
-var https         = require('https');
-var server = BinaryServer({ port: config.azure_proxy_port });
-var log_name = config.logs.access;
+var https        = require('https');
+var server       = BinaryServer({ port: config.azure_proxy_port });
+var log_name     = config.logs.access;
+var url          = require('url');
 
 function getDateTime() {
 
@@ -116,7 +117,8 @@ server.on('connection', function(client){
                         blobs.push({ 
                             url : azure_blobs.getBlobUrl(config.blob_containers.active, item.name),
                             type : item.properties['content-type'],
-                            uploaded : new Date(item.properties['last-modified']).getTime()
+                            uploaded : new Date(item.properties['last-modified']).getTime(),
+                            name: item.name
                         });
                     });
                     //sort blobs by date DESC
@@ -187,7 +189,8 @@ server.on('connection', function(client){
                                 blobs.push({ 
                                     url : azure_blobs.getBlobUrl(config.blob_containers.pending, item.name),
                                     type : item.properties['content-type'],
-                                    uploaded : new Date(item.properties['last-modified']).getTime()
+                                    uploaded : new Date(item.properties['last-modified']).getTime(),
+                                    name: item.name
                                 });
                             });
                             //sort blobs by date DESC
@@ -219,5 +222,51 @@ server.on('connection', function(client){
       }
   }); 
 });
+
+// Create a http server for dynamic html generation which inclues Open Graph
+// meta tags for facebook
+
+http.createServer(function (req, res) {
+    res.writeHead(200, {'Content-Type': 'text/html'});
+    var queryObject = url.parse(req.url,true).query;
+    var image_location = azure_blobs.getBlobUrl(config.blob_containers.active, queryObject.name);
+    var html = "";
+    if(queryObject.name.indexOf(".mp4") == -1){
+        html = ['<!DOCTYPE html>',
+                    '<html>',
+                        '<head>',
+                            '<title>Cloud images</title>',
+                            '<meta charset="UTF-8">',
+                            '<meta name="viewport" content="width=device-width, initial-scale=1.0">',
+                            '<meta property="og:description" content="This image was shared via http://your.domain.com" />',
+                            '<meta property="og:image" content="' + image_location + '" />',
+                            '<meta property="og:url" content="http://your.domain.com/share/' + queryObject.name + '" />',
+                        '</head>',
+                        '<body>',
+                            '<img src="' + image_location + '" />',
+                        '</body>',
+                    '</html>'].join('');
+        logMessage('Image ' + image_location + ' opened via share link');
+    }
+    else{
+        html = ['<!DOCTYPE html>',
+                    '<html>',
+                        '<head>',
+                            '<title>Cloud images</title>',
+                            '<meta charset="UTF-8">',
+                            '<meta name="viewport" content="width=device-width, initial-scale=1.0">',
+                            '<meta property="og:description" content="This video was shared via http://your.domain.com" />',
+                            '<meta property="og:url" content="http://your.domain.com/share/' + queryObject.name + '" />',
+                        '</head>',
+                        '<body>',
+                            '<video autobuffer controls>',
+                                '<source src="' + image_location + '" type="video/mp4"></source>',
+                            '/video>',
+                        '</body>',
+                    '</html>'].join('');
+        logMessage('Video ' + image_location + ' opened via share link');
+    }
+    res.end(html);
+}).listen(3000, "127.0.0.1");
 
 logMessage('Azure proxy started!');
