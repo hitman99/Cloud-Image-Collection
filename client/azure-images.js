@@ -6,7 +6,7 @@
 (function(){
     var azure_images = {
         binary_client: null,
-        server_address: 'ws://your.domain.com:1234',
+        server_address: 'ws://test-img.hitman.lt:1234',
         auth_ok: false,
         blobs : null,
         lastLoaded: -1,
@@ -46,7 +46,7 @@
             '<div class="column">',
                 '<div class="ui segments">',
                     '<div class="ui segment" style="overflow: hidden;" >',
-                        '<video class="ui centered video" autobuffer style="display: none;">',
+                        '<video class="ui centered image" autobuffer style="display: none;">',
                             '<source src="" type=""></source>',
                         '</video>',
                         '<div class="ui basic center aligned segment">',
