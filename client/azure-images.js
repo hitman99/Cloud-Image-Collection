@@ -11,6 +11,7 @@
         blobs : null,
         lastLoaded: -1,
         initialLoad: 3,
+        lazyLoad: 3,
         facebook_sharer: 'https://www.facebook.com/sharer/sharer.php?u=',
         imageContainer : [
             '<div class="column">',
@@ -32,12 +33,16 @@
                         '</div>',
                     '</div>',
                     '<div class="ui basic segment">',
-                        '<button class="ui facebook button">',
+                        '<button class="ui facebook icon tiny button">',
                             '<i class="facebook icon"></i>',
-                                'Share',
                         '</button>',
-                        '<button class="ui primary button">',
-                            'Copy link',
+                        '<button class="ui primary tiny button">',
+                            '<i class="share alternate icon"></i>',
+                            'Share URL',
+                        '</button>',
+                        '<button class="ui teal tiny button">',
+                            '<i class="share alternate icon"></i>',
+                            'Image URL',
                         '</button>',
                     '</div>',
                 '</div>',
@@ -73,12 +78,16 @@
                         '</div>',
                     '</div>',
                     '<div class="ui basic segment">',
-                        '<button class="ui facebook button">',
+                        '<button class="ui facebook icon tiny button">',
                             '<i class="facebook icon"></i>',
-                                'Share',
                         '</button>',
-                        '<button class="ui primary button">',
-                            'Copy link',
+                        '<button class="ui primary tiny button">',
+                            '<i class="share alternate icon"></i>',
+                            'Share URL',
+                        '</button>',
+                        '<button class="ui teal tiny button">',
+                            '<i class="share alternate icon"></i>',
+                            'Image URL',
                         '</button>',
                     '</div>',
                 '</div>',
@@ -158,28 +167,36 @@
             $(window).on( "scroll" , function() {
                 var $document = $(document);
                 var $window = $(this);
-                if( $document.scrollTop() >= $document.height() - $window.height() - 200 ) {
+                if( $document.scrollTop() >= $document.height() - $window.height() - 500 ) {
                     if(!loading){
                         loading = true;
-                        if(++_this.lastLoaded < _this.blobs.length){
-                            var item = _this.blobs[_this.lastLoaded];
-                            _this.createImageInDOM(item.url, item.type);
-                            _this.activateSharingButtons(item.name);
+                        for(var i = 0; i < _this.lazyLoad; i++){
+                            if(++_this.lastLoaded < _this.blobs.length){
+                                var item = _this.blobs[_this.lastLoaded];
+                                _this.createImageInDOM(item.url, item.type);
+                                _this.activateSharingButtons(item.name, item.url);
+                            }
+                            else{
+                                break;
+                            }
                         }
                         loading = false;
                     }
                 }
             });
         },
-        activateSharingButtons : function(name){
+        activateSharingButtons : function(name, src){
             var url = window.location.origin + '/share/' + name;
             var _this = this;
             $('.ui.one.column.grid').find('.segment:last').find('button:first').click(function(){
                 var win = window.open(_this.facebook_sharer + url, '_blank');
                 win.focus();
             });
-            $('.ui.one.column.grid').find('.segment:last').find('button:last').click(function(){
+            $('.ui.one.column.grid').find('.segment:last').find('button:eq(1)').click(function(){
                 window.prompt("URL:", url);
+            });
+            $('.ui.one.column.grid').find('.segment:last').find('button:last').click(function(){
+                window.prompt("URL:", src);
             });
         },
         showImages : function(){
@@ -187,7 +204,7 @@
                 for(var i = 0; i != this.initialLoad; i++){
                     var item = this.blobs[i];
                     this.createImageInDOM(item.url, item.type);
-                    this.activateSharingButtons(item.name);
+                    this.activateSharingButtons(item.name, item.url);
                 }
                 this.lastLoaded = 2;
             }
