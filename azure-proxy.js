@@ -95,7 +95,7 @@ server.on('connection', function(client){
                         logMessage('Received file from client: ' + filename);
                         logMessage('Uploading ' + filename + ' to Azure...');
                         stream.write({ end: true });
-                        azure_blobs.upload(filename, config.blob_containers.pending, generated_name + extension)
+                        azure_blobs.upload(filename, config.blob_containers.pending, generated_name + extension, { title: meta.metadata.title })
                             .then(function(result){
                                 logMessage('Uploaded ' + filename + ' to Azure.');
                             })
@@ -118,7 +118,8 @@ server.on('connection', function(client){
                             url : azure_blobs.getBlobUrl(config.blob_containers.active, item.name),
                             type : item.properties['content-type'],
                             uploaded : new Date(item.properties['last-modified']).getTime(),
-                            name: item.name
+                            name: item.name,
+                            title: (typeof item.metadata.title != 'undefined') ? item.metadata.title : null
                         });
                     });
                     //sort blobs by date DESC
@@ -153,7 +154,7 @@ server.on('connection', function(client){
                                     file.close();
                                     logMessage('Downloaded file ' + filename);
                                     logMessage('Uploading ' + filename + ' to Azure...');
-                                    azure_blobs.upload(filename, config.blob_containers.pending, generated_name + extension)
+                                    azure_blobs.upload(filename, config.blob_containers.pending, generated_name + extension, { title : meta.metadata.title })
                                         .then(function(result){
                                             logMessage('Uploaded ' + filename + ' to Azure.');
                                             stream.write({ end : true });

@@ -8,9 +8,9 @@ module.exports = {
      * uploads image to azure blob storage
      * @returns Q.promise
      */
-    upload : function(filename, container_name, blob_name){
+    upload : function(filename, container_name, blob_name, meta_info){
         var deferred = Q.defer();
-        blobSvc.createBlockBlobFromLocalFile(container_name, blob_name, filename, function(error, result, response){
+        blobSvc.createBlockBlobFromLocalFile(container_name, blob_name, filename, { metadata: meta_info }, function(error, result, response){
             console.log(result);
             if(!error){
                 deferred.resolve(response);
@@ -23,7 +23,7 @@ module.exports = {
     },
     getList : function(container_name) {
         var deferred = Q.defer();
-        blobSvc.listBlobsSegmented(container_name, null, function(error, result, response){
+        blobSvc.listBlobsSegmented(container_name, null, { include : 'metadata' }, function(error, result, response){
             if(!error){
                 deferred.resolve(result);
             }

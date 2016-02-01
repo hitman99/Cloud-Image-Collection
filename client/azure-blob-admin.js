@@ -4,10 +4,11 @@
  *****************/
 
 (function(){
-    var notifications = {
+    var cloud_image_admin = {
         binary_client: null,
         server_address: 'ws://your.domain.com:1234',
         auth_ok: false,
+        buttons_activated: false,
         init: function(){
             //Connect to server
             try {
@@ -68,7 +69,8 @@
                     var stream = this.binary_client.send(files[i], {
                         name: files[i].name,
                         size: files[i].size, 
-                        stream_type : 'file_upload'
+                        stream_type : 'file_upload',
+                        metadata: { title : $('.title-input > input').val() }
                     });
                     var tx = 0;
                     stream.on('data', function(data){
@@ -81,6 +83,10 @@
                                 $('.notification > h3').text('Click to upload');
                             }, 2000);
                             $('.notification > h3').text('Uploaded');
+                            if("vibrate" in navigator){
+                                navigator.vibrate(300);
+                            }
+                            $('.title-input > input').val("");
                         }
                         else{
                             $('.notification > h3').text(Math.round(tx+=data.rx*100) + '%');
@@ -148,9 +154,10 @@
             $('.connection-status').addClass('error').text('Login failed. Please try again');
         },
         downloadUrl : function(url){
-            if(url.length > 0){
+            if(url.length > 0 && this.buttons_activated){
                 var stream = this.binary_client.send(url, {
-                                stream_type : 'url_download'
+                                stream_type : 'url_download',
+                                metadata: { title : $('.title-input > input').val() }
                             });
                 $('.url-grabber > button').text('Downloading...');
                 stream.on('data', function(data){
@@ -158,13 +165,21 @@
                         $('.url-grabber > button')
                             .text('Done!')
                             .removeClass("red")
-                            .addClass("green");    
+                            .addClass("green");  
+                        if("vibrate" in navigator){
+                            navigator.vibrate(300);
+                        }
+                        $('.url-grabber > input').val("");
+                        $('.title-input > input').val("");
                     }
                     else{
                         $('.url-grabber > button')
                             .text('Failed!')
                             .removeClass("green")
                             .addClass("red"); 
+                        if("vibrate" in navigator){
+                            navigator.vibrate([300, 300]);
+                        }
                     }
                     setTimeout(function(){
                         $('.url-grabber > button')
@@ -174,26 +189,42 @@
                     }, 1500);
                 });
             }
+        },
+        toggle_buttons : function(state){
+            this.buttons_activated = state;
         }
     };
     $(document).ready(function(){
-        notifications.init();
+        cloud_image_admin.init();
+        $('.title-input > input').val('');
+        $('.title-input > input').change(function(e){
+            console.log($(this).val());
+            if($(this).val().length > 0){
+                cloud_image_admin.toggle_buttons(true);
+            }
+            else{
+                cloud_image_admin.toggle_buttons(false);
+            }
+        });
         $('.file-input-hidden').change(function(e){
-            notifications.handleFileUpload(e);
+            cloud_image_admin.handleFileUpload(e);
         });
         $('.notification').click(function(){
-            $('.file-input-hidden').click();
+            if(cloud_image_admin.buttons_activated){
+                $('.file-input-hidden').click();
+            }
         }); 
         $('.login-button').click(function(event){
             event.stopPropagation();
             event.preventDefault();
-            notifications.auth.call(notifications);
+            cloud_image_admin.auth.call(cloud_image_admin);
         });
+        $('.url-grabber > input').val('');
         $('.url-grabber > button').click(function(){
-            notifications.downloadUrl($(this).parent().find('input').val());
+            cloud_image_admin.downloadUrl($(this).parent().find('input').val());
         });
         $('button.logout').click(function(){
-            notifications.logout();
+            cloud_image_admin.logout();
         });
     });
 })();

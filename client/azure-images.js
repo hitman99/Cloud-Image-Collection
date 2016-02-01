@@ -6,7 +6,7 @@
 (function(){
     var azure_images = {
         binary_client: null,
-        server_address: 'ws://test-img.hitman.lt:1234',
+        server_address: 'ws://your.domain.com:1234',
         auth_ok: false,
         blobs : null,
         lastLoaded: -1,
@@ -15,81 +15,81 @@
         facebook_sharer: 'https://www.facebook.com/sharer/sharer.php?u=',
         imageContainer : [
             '<div class="column">',
-                '<div class="ui segments">',
-                    '<div class="ui basic segment">',
-                        '<img class="ui centered image"  src="" style="display: none;"/>',
-                        '<div class="ui basic center aligned segment">',
-                            '<div class="sk-cube-grid">',
-                                '<div class="sk-cube sk-cube1"></div>',
-                                '<div class="sk-cube sk-cube2"></div>',
-                                '<div class="sk-cube sk-cube3"></div>',
-                                '<div class="sk-cube sk-cube4"></div>',
-                                '<div class="sk-cube sk-cube5"></div>',
-                                '<div class="sk-cube sk-cube6"></div>',
-                                '<div class="sk-cube sk-cube7"></div>',
-                                '<div class="sk-cube sk-cube8"></div>',
-                                '<div class="sk-cube sk-cube9"></div>',
-                            '</div>',
+                '<h3 class="ui dividing header">',
+                    '</h3>',
+                '<div class="ui basic segment">',
+                    '<img class="ui centered image"  src="" style="display: none;"/>',
+                    '<div class="ui basic center aligned segment">',
+                        '<div class="sk-cube-grid">',
+                            '<div class="sk-cube sk-cube1"></div>',
+                            '<div class="sk-cube sk-cube2"></div>',
+                            '<div class="sk-cube sk-cube3"></div>',
+                            '<div class="sk-cube sk-cube4"></div>',
+                            '<div class="sk-cube sk-cube5"></div>',
+                            '<div class="sk-cube sk-cube6"></div>',
+                            '<div class="sk-cube sk-cube7"></div>',
+                            '<div class="sk-cube sk-cube8"></div>',
+                            '<div class="sk-cube sk-cube9"></div>',
                         '</div>',
                     '</div>',
-                    '<div class="ui basic segment">',
-                        '<button class="ui facebook icon tiny button">',
-                            '<i class="facebook icon"></i>',
-                        '</button>',
-                        '<button class="ui primary tiny button">',
-                            '<i class="share alternate icon"></i>',
-                            'Share URL',
-                        '</button>',
-                        '<button class="ui teal tiny button">',
-                            '<i class="share alternate icon"></i>',
-                            'Image URL',
-                        '</button>',
-                    '</div>',
+                '</div>',
+                '<div class="ui basic segment">',
+                    '<button class="ui facebook icon tiny button">',
+                        '<i class="facebook icon"></i>',
+                    '</button>',
+                    '<button class="ui primary tiny button">',
+                        '<i class="share alternate icon"></i>',
+                        'Share URL',
+                    '</button>',
+                    '<button class="ui teal tiny button">',
+                        '<i class="share alternate icon"></i>',
+                        'Image URL',
+                    '</button>',
                 '</div>',
             '</div>'].join(''),
         videoContainer : [
             '<div class="column">',
-                '<div class="ui segments">',
-                    '<div class="ui segment" style="overflow: hidden;" >',
-                        '<video class="ui centered image" autobuffer style="display: none;">',
-                            '<source src="" type=""></source>',
-                        '</video>',
-                        '<div class="ui basic center aligned segment">',
-                            '<div class="sk-cube-grid">',
-                                '<div class="sk-cube sk-cube1"></div>',
-                                '<div class="sk-cube sk-cube2"></div>',
-                                '<div class="sk-cube sk-cube3"></div>',
-                                '<div class="sk-cube sk-cube4"></div>',
-                                '<div class="sk-cube sk-cube5"></div>',
-                                '<div class="sk-cube sk-cube6"></div>',
-                                '<div class="sk-cube sk-cube7"></div>',
-                                '<div class="sk-cube sk-cube8"></div>',
-                                '<div class="sk-cube sk-cube9"></div>',
-                            '</div>',
+                '<h3 class="ui dividing header">',
+                '</h3>',
+                '<div class="ui basic segment" style="overflow: hidden;" >',
+                    '<video class="ui centered image" autobuffer style="display: none;">',
+                        '<source src="" type=""></source>',
+                    '</video>',
+                    '<div class="ui basic center aligned segment">',
+                        '<div class="sk-cube-grid">',
+                            '<div class="sk-cube sk-cube1"></div>',
+                            '<div class="sk-cube sk-cube2"></div>',
+                            '<div class="sk-cube sk-cube3"></div>',
+                            '<div class="sk-cube sk-cube4"></div>',
+                            '<div class="sk-cube sk-cube5"></div>',
+                            '<div class="sk-cube sk-cube6"></div>',
+                            '<div class="sk-cube sk-cube7"></div>',
+                            '<div class="sk-cube sk-cube8"></div>',
+                            '<div class="sk-cube sk-cube9"></div>',
                         '</div>',
-                        '<div class="ui dimmer">',
-                            '<div class="content">',
-                                '<div class="center">',
-                                    '<h2 class="ui inverted icon header" style="cursor: pointer;">',
-                                        '<i class="video large play icon"></i>',
-                                    '</h2>',
-                                '</div>',
+                    '</div>',
+                    '<div class="ui dimmer">',
+                        '<div class="content">',
+                            '<div class="center">',
+                                '<h2 class="ui inverted icon header" style="cursor: pointer;">',
+                                    '<i class="video large play icon"></i>',
+                                '</h2>',
                             '</div>',
                         '</div>',
                     '</div>',
-                    '<div class="ui basic segment">',
-                        '<button class="ui facebook icon tiny button">',
-                            '<i class="facebook icon"></i>',
-                        '</button>',
-                        '<button class="ui primary tiny button">',
-                            '<i class="share alternate icon"></i>',
-                            'Share URL',
-                        '</button>',
-                        '<button class="ui teal tiny button">',
-                            '<i class="share alternate icon"></i>',
-                            'Image URL',
-                        '</button>',
-                    '</div>',
+                '</div>',
+                '<div class="ui basic segment">',
+                    '<button class="ui facebook icon tiny button">',
+                        '<i class="facebook icon"></i>',
+                    '</button>',
+                    '<button class="ui primary tiny button">',
+                        '<i class="share alternate icon"></i>',
+                        'Share URL',
+                    '</button>',
+                    '<button class="ui teal tiny button">',
+                        '<i class="share alternate icon"></i>',
+                        'Image URL',
+                    '</button>',
                 '</div>',
             '</div>'].join(''),
         init: function(){
@@ -119,12 +119,13 @@
                 console.log(err);
             }
         },
-        createImageInDOM : function(src, type){
-            if(type.search('video') != -1){
+        createImageInDOM : function(item){
+            if(item.type.search('video') != -1){
                 var $video_node = $('.ui.one.column.grid').append(this.videoContainer).find('video:last');
+                $video_node.parent().parent().find('.dividing.header').text(item.title);
                 $video_node.find('source')
-                    .attr('src', src)
-                    .attr('type', type);
+                    .attr('src', item.url)
+                    .attr('type', item.type);
                 var $dimmer = null;
                 $video_node.get(0).addEventListener('loadeddata', function() {
                     $video_node.next().remove();
@@ -149,8 +150,6 @@
                 });
                 $video_node.get(0).addEventListener('ended', function(){
                     $dimmer.dimmer('show');
-                    //$video_node.hide();
-                    //$video_node.parent().css({ height : $video_node.height() });//.addClass('dummy-video');
                 }, false);
             }
             else{
@@ -158,7 +157,8 @@
                     .bind('load', function(){
                         $(this).show().next().remove()
                     })
-                    .attr('src', src);
+                    .attr('src', item.url)
+                    .parent().parent().find('.header').text(item.title);
             }
         },
         lazyLoadingInit : function(){
@@ -173,7 +173,7 @@
                         for(var i = 0; i < _this.lazyLoad; i++){
                             if(++_this.lastLoaded < _this.blobs.length){
                                 var item = _this.blobs[_this.lastLoaded];
-                                _this.createImageInDOM(item.url, item.type);
+                                _this.createImageInDOM(item);
                                 _this.activateSharingButtons(item.name, item.url);
                             }
                             else{
@@ -203,7 +203,7 @@
             if(this.lastLoaded < 0 ){
                 for(var i = 0; i != this.initialLoad; i++){
                     var item = this.blobs[i];
-                    this.createImageInDOM(item.url, item.type);
+                    this.createImageInDOM(item);
                     this.activateSharingButtons(item.name, item.url);
                 }
                 this.lastLoaded = 2;
