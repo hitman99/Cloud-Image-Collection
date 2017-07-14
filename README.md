@@ -1,4 +1,4 @@
-Hitman's Cloud Image Collection
+Cloud Image Collection
 ==
 
 About
